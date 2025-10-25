@@ -35,4 +35,69 @@ public class AccountController extends AbstractController {
         String accountNo = consoleView.getString("Enter account number");
         checkBalance(accountNo);
     }
+
+    public void withdraw() {
+        String accountNo = consoleView.getString("Enter account number");
+        try {
+            Account account = aService.getAccount(accountNo);
+
+            if (account.balance() <= 0) {
+                consoleView.showMessage("Insufficient balance");
+                return;
+            }
+
+            Double amount = consoleView.getDouble("Enter amount");
+            if (amount > account.balance() || amount < 0) {
+                consoleView.showMessage("Insufficient balance/Invalid amount");
+                return;
+            }
+            account.withdraw(amount);
+            account = aService.updateAccount(account);
+            consoleView.showMessage(account.toString());
+        } catch (Exception e) {
+            consoleView.showMessage(e.getMessage());
+        }
+
+    }
+
+    public void deposit() {
+        String accountNo = consoleView.getString("Enter account number");
+        try {
+            Account account = aService.getAccount(accountNo);
+            Double amount = consoleView.getDouble("Enter amount");
+            if (amount < 0) {
+                consoleView.showMessage("Invalid amount");
+                return;
+            }
+            account.deposit(amount);
+            account = aService.updateAccount(account);
+            consoleView.showMessage(account.toString());
+        } catch (Exception e) {
+            consoleView.showMessage(e.getMessage());
+        }
+    }
+
+    public void transfer() {
+        try {
+            String sourceAccountNo = consoleView.getString("Enter source account number");
+            Account sourceAccount = aService.getAccount(sourceAccountNo);
+
+            String destinationAccountNo = consoleView.getString("Enter destination account number");
+            Account destinationAccount = aService.getAccount(destinationAccountNo);
+
+            Double amount = consoleView.getDouble("Enter amount");
+            if (amount > sourceAccount.balance() || amount < 0) {
+                consoleView.showMessage("Insufficient balance/Invalid amount");
+                return;
+            }
+            sourceAccount.withdraw(amount);
+            sourceAccount = aService.updateAccount(sourceAccount);
+            destinationAccount.deposit(amount);
+            destinationAccount = aService.updateAccount(destinationAccount);
+            consoleView.showMessage(sourceAccount.toString());
+            consoleView.showMessage(destinationAccount.toString());
+        } catch (Exception e) {
+            consoleView.showMessage(e.getMessage());
+        }
+    }
 }

@@ -20,4 +20,12 @@ public class AccountRepository {
     public Optional<Account> get(String accountNo) {
         return Optional.ofNullable(accounts.get(accountNo));
     }
+
+    public Account update(Account account) {
+        if (!accounts.containsKey(account.accountNo())) {
+            throw new IllegalArgumentException("Account not found");
+        }
+        accounts.put(account.accountNo(), account);
+        return account;
+    }
 }

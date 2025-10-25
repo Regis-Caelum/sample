@@ -15,7 +15,13 @@ public class MainMenuController extends AbstractController {
     }
 
     public void mainMenu() {
-        List<String> displayOptions = Arrays.asList("Create Account", "Check Balance", "Exit");
+        List<String> displayOptions = Arrays.asList(
+                "Create Account",
+                "Check Balance",
+                "Withdraw",
+                "Deposit",
+                "Transfer",
+                "Exit");
         while (true) {
             int choice = consoleView.showOptions(displayOptions);
 
@@ -25,7 +31,17 @@ public class MainMenuController extends AbstractController {
                     break;
                 case 2:
                     accountController.checkBalance();
+                    break;
                 case 3:
+                    accountController.withdraw();
+                    break;
+                case 4:
+                    accountController.deposit();
+                    break;
+                case 5:
+                    accountController.transfer();
+                    break;
+                case 6:
                     System.out.println("Exiting the application");
                     return;
                 default:

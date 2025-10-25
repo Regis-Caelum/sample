@@ -28,13 +28,17 @@ public class AccountService {
 
     public Account getAccount(String accountNo) {
         if (accountNo == null || accountNo.isEmpty() || accountNo.isBlank()) {
-            throw new IllegalArgumentException("Invalid accoun noo");
+            throw new IllegalArgumentException("Invalid accoun number");
         }
 
         var account = aRepository.get(accountNo.trim());
         if (!account.isPresent())
-            throw new NoSuchElementException("No Account present with the account no");
+            throw new NoSuchElementException("No Account present with the account number");
 
         return account.get();
+    }
+
+    public Account updateAccount(Account account) {
+        return aRepository.update(account);
     }
 }
